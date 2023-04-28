@@ -24,6 +24,8 @@ func TestRedact(t *testing.T) {
 	conn, err := sqlite.OpenConn("file::memory:", 0)
 	require.NoError(t, err)
 
+	defer conn.Close()
+
 	err = conn.EnableLoadExtension(true)
 	require.NoError(t, err)
 

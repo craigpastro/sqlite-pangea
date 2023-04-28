@@ -17,15 +17,10 @@ jobs:
           version: latest
   
   test:
-    needs: lint
     runs-on: ubuntu-latest
     env:
       PANGEA_TOKEN: ${{ secrets.PANGEA_TOKEN }}
-      PANGEA_ENTENSION: ${{ github.workspace }}/pangea.so
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-        with:
-          go-version-file: './go.mod'
-          check-latest: true
-      - run: go test ./...
+      - uses: actions/setup-deno@v1
+      - run: deno run -A --unstable test.ts
