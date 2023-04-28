@@ -22,5 +22,7 @@ jobs:
       PANGEA_TOKEN: ${{ secrets.PANGEA_TOKEN }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-deno@v1
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
       - run: deno run -A --unstable test.ts
