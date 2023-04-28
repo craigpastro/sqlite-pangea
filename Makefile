@@ -5,3 +5,7 @@ build:
 .PHONY: lint
 lint:
 	golangci-lint run
+
+.PHONY: test
+test: build
+	go test ./...

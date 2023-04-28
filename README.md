@@ -15,6 +15,10 @@ my phone number is <PHONE_NUMBER>
 > .quit
 ```
 
+## Tests
+
+Run `make test`.
+
 ## The roadmap maybe
 
 [x] [Redact](https://pangea.cloud/services/redact/)
