@@ -8,4 +8,4 @@ lint:
 
 .PHONY: test
 test:
-	PANGEA_EXTENSION=pangea.so go test ./...
+	deno test -A --unstable
