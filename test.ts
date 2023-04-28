@@ -10,7 +10,7 @@ Deno.test(function testRedac() {
 
   const db = new Database(":memory:", { enableLoadExtension: true });
 
-  db.loadExtension("pangea.so");
+  db.loadExtension("./pangea.so");
 
   const stmt = db.prepare(
     `select redact('${token}', 'my phone number is 123-456-7890')`,
