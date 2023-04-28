@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"testing"
@@ -10,10 +11,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const extension = "pangea.so"
+
 func TestRedact(t *testing.T) {
 	token, ok := os.LookupEnv("PANGEA_TOKEN")
 	if !ok {
 		t.Fatal("please set the PANGEA_TOKEN environment variable")
+	}
+
+	if _, err := os.Stat(extension); errors.Is(err, os.ErrNotExist) {
+		t.Fatal("'pangea.so' does not exist; perhaps you need to build it?")
 	}
 
 	conn, err := sqlite.OpenConn("file::memory:", 0)
@@ -22,7 +29,7 @@ func TestRedact(t *testing.T) {
 	err = conn.EnableLoadExtension(true)
 	require.NoError(t, err)
 
-	err = conn.LoadExtension("pangea.so", "")
+	err = conn.LoadExtension(extension, "")
 	require.NoError(t, err)
 
 	q := fmt.Sprintf("select redact('%s', 'my phone number is 123-456-7890')", token)

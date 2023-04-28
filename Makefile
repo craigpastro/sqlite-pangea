@@ -7,5 +7,5 @@ lint:
 	golangci-lint run
 
 .PHONY: test
-test: build
+test:
 	go test ./...
