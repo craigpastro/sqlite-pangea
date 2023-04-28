@@ -25,5 +25,4 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-      - run: ls -la
-      - run: deno test -A --unstable
+      - run: make test

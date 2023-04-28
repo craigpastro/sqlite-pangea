@@ -7,5 +7,5 @@ lint:
 	golangci-lint run
 
 .PHONY: test
-test:
+test: build
 	deno test -A --unstable
