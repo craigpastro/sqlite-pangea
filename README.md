@@ -28,5 +28,6 @@ Run `make test`.
 - [ ] [IP Intel](https://pangea.cloud/services/ip-intel/reputation/)
 - [ ] [File Intel](https://pangea.cloud/services/file-intel/)
 - [ ] [Domain Intel](https://pangea.cloud/services/domain-intel/)
-- [ ] [URL Intel](https://pangea.cloud/services/url-intel/)
+- [x] [URL Intel](https://pangea.cloud/services/url-intel/)
+  - [x] Reputation
 - [ ] [User Intel](https://pangea.cloud/services/user-intel/)
