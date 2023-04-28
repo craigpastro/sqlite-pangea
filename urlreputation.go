@@ -40,5 +40,5 @@ func (r *URLReputation) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
 		return
 	}
 
-	ctx.ResultBlob(b)
+	ctx.ResultText(string(b))
 }
