@@ -28,4 +28,4 @@ jobs:
         with:
           go-version-file: './go.mod'
           check-latest: true
-      - run: make test
+      - run: go test ./...
