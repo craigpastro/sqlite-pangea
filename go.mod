@@ -5,7 +5,6 @@ go 1.20
 require (
 	github.com/pangeacyber/pangea-go/pangea-sdk v1.7.0
 	go.riyazali.net/sqlite v0.0.0-20230320080028-80a51d3944c0
-	gopkg.in/square/go-jose.v2 v2.6.0
 )
 
 require (

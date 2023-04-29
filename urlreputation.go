@@ -2,21 +2,21 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/pangeacyber/pangea-go/pangea-sdk/pangea"
 	"github.com/pangeacyber/pangea-go/pangea-sdk/service/url_intel"
 	"go.riyazali.net/sqlite"
-	"gopkg.in/square/go-jose.v2/json"
 )
 
 type URLReputation struct{}
 
-func (r *URLReputation) Args() int { return 2 }
+func (*URLReputation) Args() int { return 2 }
 
-func (r *URLReputation) Deterministic() bool { return true }
+func (*URLReputation) Deterministic() bool { return true }
 
-func (r *URLReputation) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
+func (*URLReputation) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
 	token := values[0].Text()
 	url := values[1].Text()
 
