@@ -17,6 +17,8 @@ my phone number is <PHONE_NUMBER>
 > .quit
 ```
 
+For more examples, see [`test.ts`](./test.ts).
+
 ## Tests
 
 Run `make test`.
@@ -25,9 +27,8 @@ Run `make test`.
 
 - [x] [Redact](https://pangea.cloud/services/redact/)
 - [ ] [Embargo](https://pangea.cloud/services/embargo-check/)
-- [ ] [IP Intel](https://pangea.cloud/services/ip-intel/reputation/)
+- [x] [IP Intel](https://pangea.cloud/services/ip-intel/reputation/)
 - [ ] [File Intel](https://pangea.cloud/services/file-intel/)
 - [ ] [Domain Intel](https://pangea.cloud/services/domain-intel/)
 - [x] [URL Intel](https://pangea.cloud/services/url-intel/)
-  - [x] Reputation
 - [ ] [User Intel](https://pangea.cloud/services/user-intel/)

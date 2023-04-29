@@ -11,11 +11,11 @@ import (
 
 type Redact struct{}
 
-func (r *Redact) Args() int { return 2 }
+func (*Redact) Args() int { return 2 }
 
-func (r *Redact) Deterministic() bool { return true }
+func (*Redact) Deterministic() bool { return true }
 
-func (r *Redact) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
+func (*Redact) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
 	token := values[0].Text()
 	text := values[1].Text()
 
