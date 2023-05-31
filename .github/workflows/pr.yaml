@@ -19,7 +19,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      PANGEA_DOMAIN: ${{ env.PANGEA_TOKEN }}
+      PANGEA_DOMAIN: ${{ env.PANGEA_DOMAIN }}
       PANGEA_TOKEN: ${{ secrets.PANGEA_TOKEN }}
     steps:
       - uses: actions/checkout@v3
