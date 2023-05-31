@@ -10,19 +10,26 @@ import (
 	"go.riyazali.net/sqlite"
 )
 
-type URLReputation struct{}
+type URLReputation struct {
+	conn *sqlite.Conn
+}
 
-func (*URLReputation) Args() int { return 2 }
+func (*URLReputation) Args() int { return 1 }
 
 func (*URLReputation) Deterministic() bool { return true }
 
-func (*URLReputation) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
-	token := values[0].Text()
-	url := values[1].Text()
+func (u *URLReputation) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
+	domain, token, err := getPangeaDomainAndToken(u.conn)
+	if err != nil {
+		ctx.ResultError(fmt.Errorf("failed to retrieve the config: %w", err))
+		return
+	}
+
+	url := values[0].Text()
 
 	client := url_intel.New(&pangea.Config{
+		Domain: domain,
 		Token:  token,
-		Domain: "aws.us.pangea.cloud",
 	})
 
 	resp, err := client.Reputation(context.Background(), &url_intel.UrlReputationRequest{

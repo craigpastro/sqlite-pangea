@@ -5,11 +5,19 @@ import {
 } from "https://deno.land/std@0.185.0/testing/asserts.ts";
 
 Deno.test("extension", async (t) => {
-  const db = new Database(":memory:", { enableLoadExtension: true });
-  db.loadExtension("./pangea.so");
+  const domain = Deno.env.get("PANGEA_DOMAIN");
+  assertExists(domain);
 
   const token = Deno.env.get("PANGEA_TOKEN");
   assertExists(token);
+
+  const db = new Database(":memory:", { enableLoadExtension: true });
+  db.loadExtension("./pangea.so");
+  db.exec(
+    "insert into pangea_config (domain, token) values (?, ?)",
+    domain,
+    token,
+  );
 
   await t.step("version", async () => {
     const expected = "v" + await Deno.readTextFile("./VERSION");
@@ -20,9 +28,9 @@ Deno.test("extension", async (t) => {
     assertEquals(got, expected);
   });
 
-  await t.step("redac", async () => {
+  await t.step("redac", () => {
     const stmt = db.prepare(
-      `select redact('${token}', 'my phone number is 123-456-7890')`,
+      `select redact('my phone number is 123-456-7890')`,
     );
     const [got] = stmt.value()!;
 
@@ -31,7 +39,7 @@ Deno.test("extension", async (t) => {
 
   await t.step("url reputation", () => {
     const stmt = db.prepare(
-      `select url_reputation('${token}', 'https://google.com')`,
+      `select url_reputation('https://google.com')`,
     );
     const [got] = stmt.value()!;
 
@@ -41,7 +49,7 @@ Deno.test("extension", async (t) => {
 
   await t.step("ip intel", () => {
     const stmt = db.prepare(
-      `select ip_intel('${token}', '23.129.64.211')`,
+      `select ip_intel('23.129.64.211')`,
     );
     const [got] = stmt.value()!;
 

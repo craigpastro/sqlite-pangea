@@ -5,14 +5,15 @@ which I am "developing" in public. Not production ready :laughing:
 
 ## Usage
 
-You will need a token for a project that is in us-west-1 (i.e., the domain is
-`aws.us.pangea.cloud`), enabled for the services that you would like to use.
+You will need a version of SQLite that allows loading of extensions. If you are
+on a Mac, you can `brew install sqlite`.
 
 ```text
 $ make 
 $ sqlite3
 > .load pangea.so
-> select redact(PANGEA_TOKEN, 'my phone number is 123-456-7890');
+> insert into pangea_config (domain, token) values ('<pangea_domain>', '<pangea_token>');
+> select redact('my phone number is 123-456-7890');
 my phone number is <PHONE_NUMBER>
 > .quit
 ```
