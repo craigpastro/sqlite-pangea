@@ -9,19 +9,30 @@ import (
 	"go.riyazali.net/sqlite"
 )
 
-type Redact struct{}
+type Redact struct {
+	conn *sqlite.Conn
+}
 
-func (*Redact) Args() int { return 2 }
+func (r *Redact) GetConn() *sqlite.Conn {
+	return r.conn
+}
+
+func (*Redact) Args() int { return 1 }
 
 func (*Redact) Deterministic() bool { return true }
 
-func (*Redact) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
-	token := values[0].Text()
-	text := values[1].Text()
+func (r *Redact) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
+	domain, token, err := getPangeaDomainAndToken(r.conn)
+	if err != nil {
+		ctx.ResultError(fmt.Errorf("failed to retrieve the config: %w", err))
+		return
+	}
+
+	text := values[0].Text()
 
 	client := redact.New(&pangea.Config{
+		Domain: domain,
 		Token:  token,
-		Domain: "aws.us.pangea.cloud",
 	})
 
 	resp, err := client.Redact(context.Background(), &redact.TextInput{

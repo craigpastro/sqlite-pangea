@@ -18,19 +18,26 @@ type IPIntelResponse struct {
 	GeolocateData  *ip_intel.GeolocateData  `json:"geolocateData"`
 }
 
-type IPIntel struct{}
+type IPIntel struct {
+	conn *sqlite.Conn
+}
 
-func (*IPIntel) Args() int { return 2 }
+func (*IPIntel) Args() int { return 1 }
 
 func (*IPIntel) Deterministic() bool { return true }
 
-func (*IPIntel) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
-	token := values[0].Text()
-	ip := values[1].Text()
+func (i *IPIntel) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
+	domain, token, err := getPangeaDomainAndToken(i.conn)
+	if err != nil {
+		ctx.ResultError(fmt.Errorf("failed to retrieve the config: %w", err))
+		return
+	}
+
+	ip := values[0].Text()
 
 	client := ip_intel.New(&pangea.Config{
+		Domain: domain,
 		Token:  token,
-		Domain: "aws.us.pangea.cloud",
 	})
 
 	c := context.Background()
@@ -44,7 +51,7 @@ func (*IPIntel) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
 		return
 	}
 
-	domain, err := client.GetDomain(c, &ip_intel.IpDomainRequest{
+	ipDomain, err := client.GetDomain(c, &ip_intel.IpDomainRequest{
 		Ip:       ip,
 		Provider: "digitalelement",
 	})
@@ -82,7 +89,7 @@ func (*IPIntel) Apply(ctx *sqlite.Context, values ...sqlite.Value) {
 
 	b, err := json.Marshal(&IPIntelResponse{
 		ReputationData: &reputation.Result.Data,
-		Domain:         domain.Result.Data.Domain,
+		Domain:         ipDomain.Result.Data.Domain,
 		IsProxy:        proxy.Result.Data.IsProxy,
 		IsVPN:          vpn.Result.Data.IsVPN,
 		GeolocateData:  &geolocate.Result.Data,
